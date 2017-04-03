@@ -8,10 +8,10 @@ and includes wrappers for common verification languages, including python,
 perl, tcl, verilog, and vera.
 
 Knobs can be of the following form:
-  +k=a
-  +k=a~b                        /* choose value between a and b inclusive */
-  +k=a,b,c,d                    /* list with equal weightings */
-  +k=a:weighta,b:weightb        /* weighted list */
+*  +k=a
+*  +k=a~b                        /* choose value between a and b inclusive */
+*  +k=a,b,c,d                    /* list with equal weightings */
+*  +k=a:weighta,b:weightb        /* weighted list */
 
 Knob files can be read in hierarchically similar to how verilog
 processes argument files.  In addition you can specify multiple files
