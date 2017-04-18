@@ -12,36 +12,39 @@ access functions.  It is implemented in c and includes wrappers for common verif
 including python, tcl, verilog and go.
 
 Knobs can be of the following form:
+```
 *  +k=a
 *  +k=a~b                        /* choose value between a and b inclusive */
 *  +k=a,b,c,d                    /* list with equal weightings */
 *  +k=a:weighta,b:weightb        /* weighted list */
+```
 
 Knob files can be read in hierarchically similar to how verilog processes argument files.  
 In addition you can specify multiple files which will be selected at random, thus providing 
 the ability to select between different groups of related knob values.
 
+```
 * -f filename
 * -f file1,file2,file3
 * -f file1:weight1,file2:weight2,file3:weight3
-
-Knob values can be locked down by prefixing the value with an additional =.
-For example
-
+```
+Knob values can be locked down by prefixing the value with an additional =. For example
+```
 +myImportantValue==100
-
+```
 Once this option is encounted during the linear search, the search will stop and will effective 
 overide any values that were specified later in the input database.
 
 Knobs can be specified using regular expressions, by default glob
 style matching is used, however if the knob is specified with an extra
 "+" then extended regular expressions can be used. For example:
-
+```
   ++cpu[0-2]\\..*.cache.enable=1
-
+```
 This * will typically need to be escaped when used on a command line like so:
-
+```
   ++cpu\[0-2\]\\.\*.cache.enable=1
+```
 
 The knobs database is loaded after a call to knobs_init, a seed for selected first randomly 
 by using the time of day, this can be overridding by setting a SEED environment variable or by passing in an
