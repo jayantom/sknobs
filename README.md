@@ -84,7 +84,7 @@ The behavior is controlled by the SKNOBS_DELIMITER_FLAVOR environment variable.
 
   SKNOBS_DELIMITER_FLAVOR       | Token string
   ------------------------------|-------------
-  <none>                        | " \t\n"
+  none                        | " \t\n"
   sptbnl                        | " \t\n"
   crnl                          | "\r\n"
 
