@@ -1,8 +1,12 @@
-# Binary files automatically placed in PREFIX/`uname -m`/
-cd src
-# Place in everything "in place" as siblings of src (i.e., create "include",
-# "lib", "<mach>/lib", etc.).
-# On x86_64 machine:
-make install64 PREFIX=../..
-# On x86_32 machine:
-make install32 PREFIX=../..
+
+On an x86_64 machine:
+make install PREFIX=../../
+
+On an arm64 machine: UNIMPLEMENTED
+
+# On x86_32 machine: UNSUPPORTED
+
+Notes: 
+Binary files are automatically placed in PREFIX/`uname -m`/. Everthing is installed "in place" as siblings of src,
+i.e., create "include", "lib", "<mach>/lib", etc..
+

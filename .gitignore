@@ -1,0 +1,10 @@
+# Compiled Files
+*.o
+lib*.a
+lib*.so
+
+#Emacs tilde files
+*~
+
+#Build directories
+x86_64/lib64
