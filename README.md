@@ -11,6 +11,7 @@ The sknobs module processes command line arguments, builds a database of knob va
 access functions.  It is implemented in c and includes wrappers for common verification languages,
 including python, tcl, verilog and go.
 
+## Quick Start
 Knobs can be of the following form:
 ```
 *  +k=a
@@ -28,6 +29,9 @@ the ability to select between different groups of related knob values.
 * -f file1,file2,file3
 * -f file1:weight1,file2:weight2,file3:weight3
 ```
+
+## Additional Options
+
 Knob values can be locked down by prefixing the value with an additional =. For example
 ```
 +myImportantValue==100
@@ -46,23 +50,26 @@ This * will typically need to be escaped when used on a command line like so:
   ++cpu\[0-2\]\\.\*.cache.enable=1
 ```
 
+## Initialization
+ 
 The knobs database is loaded after a call to knobs_init, a seed for selected first randomly 
 by using the time of day, this can be overridding by setting a SEED environment variable or by passing in an
 +seed=n option on the command line.  After the seed has been determined a number of initialization files 
 are tried.
 
   1. ~/.knobsrc
-  2. starting with CWD read all *.knobsrc files.  Then work up file hierarchy to /.
-  3. process environment variable SKNOBS
-  4. process command line arguments
+  1. starting with CWD read all *.knobsrc files.  Then work up file hierarchy to /.
+  1. process environment variable SKNOBS
+  1. process command line arguments
 
+## Debug
 The module can be put into debug mode by setting the debug level environment variable SKNOBS_DEBUG.
-
+```
   setenv SKNOBS_DEBUG 0  # quiet
   setenv SKNOBS_DEBUG 1  # very basic stuff
   setenv SKNOBS_DEBUG 2  # more
   setenv SKNOBS_DEBUG 3  # including information about random choices begin made.
-
+```
 There are two flavors for tokenizing strings containing knobs.  Knob-
 containing-strings come from files and from the contents of envvar SKNOBS.
 Knobs from the commandline are already tokenized by the shell.  The original
