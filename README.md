@@ -9,7 +9,7 @@ practically all languages that are likely to be used in a design verification en
 
 The sknobs module processes command line arguments, builds a database of knob values and provides
 access functions.  It is implemented in c and includes wrappers for common verification languages,
-including python, tcl, verilog and go.
+including python, tcl, verilog, ruby and go.
 
 ## Quick Start
 Knobs can be of the following form:

@@ -918,7 +918,7 @@ int sknobs_load_file(char *filename) {
   contents = (char *)malloc(size+1);
   assert(contents);
   fseek(fp, 0, SEEK_SET);
-  fread(contents, size, 1, fp);
+  assert(fread(contents, size, 1, fp) == size);
   contents[size] = '\0';
   fclose(fp);
 

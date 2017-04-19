@@ -6,7 +6,7 @@ export ARCH
 clean: 
 	$(MAKE) -C c clean
 	$(MAKE) -C tcl clean
-	#$(MAKE) -C python clean
+	$(MAKE) -C python clean
 	#$(MAKE) -C verilog clean
 	#$(MAKE) -C perl clean
 
@@ -15,14 +15,14 @@ build:
 	@echo CURDIR=$(CURDIR)
 	$(MAKE) -C c
 	$(MAKE) -C tcl
-	#$(MAKE) -C python
+	$(MAKE) -C python
 	#$(MAKE) -C verilog
 	#$(MAKE) -C perl
 
 installarch: 
 	$(MAKE) -C c install
 	$(MAKE) -C tcl install
-	#$(MAKE) -C python install CFLAGS=
+	$(MAKE) -C python install CFLAGS=
 	#$(MAKE) -C verilog install
 	#$(MAKE) -C perl install
 

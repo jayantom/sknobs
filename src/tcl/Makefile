@@ -17,7 +17,7 @@ sknobs.so: sknobs_wrap.o
 	gcc -shared $(CFLAGS) $^ ../c/libsknobs.a -o $@
 
 install: sknobs.so
-	install -D sknobs.so $(PREFIX)/$(ARCH)/$(INSTALL_LIB}/tcl/sknobs.so
+	install -D sknobs.so $(PREFIX)/$(ARCH)/$(INSTALL_LIB)/tcl/sknobs.so
 
 test: sknobs.so
 	./testsknobs +abc=5 +xyz=10

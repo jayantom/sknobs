@@ -6,16 +6,13 @@
 ////////////////////////////////////////////////////////////////////////////
 // main
 int main(int argc, char *argv[]) {
-  long v;
-  char *s;
-  char **fl;
   int i;
   sknobs_iterator_p iterator;
   if (sknobs_init(argc, argv)) {
     printf("error: knobs: unable to init\n");
     return 1;
   }
-  printf("seed: %ld\n", sknobs_get_value("seed", 0));
+  printf("seed: %lld\n", sknobs_get_value("seed", 0));
   sknobs_set_string("stu", "1:2,10~12:5");
   sknobs_set_string("xyz", "=there");
   sknobs_set_string("abc", "7~9");
@@ -32,12 +29,12 @@ int main(int argc, char *argv[]) {
   sknobs_dump();
   printf("static:\n");
   for (i=0; i<10; ++i)
-    printf("abc=%ld\n", sknobs_get_value("abc", 2));
+    printf("abc=%lld\n", sknobs_get_value("abc", 2));
   printf("dynamic:\n");
   for (i=0; i<10; ++i)
-    printf("abc=%ld\n", sknobs_get_dynamic_value("abc", 2));
+    printf("abc=%lld\n", sknobs_get_dynamic_value("abc", 2));
   for (i=0; i<10; ++i)
-    printf("stu=%ld\n", sknobs_get_dynamic_value("stu", 2));
+    printf("stu=%lld\n", sknobs_get_dynamic_value("stu", 2));
   printf("xyz=%s\n", sknobs_get_string("xyz", "hi"));
   printf("find_file: .knobsrc: %s\n", sknobs_find_file(".knobsrc"));
   printf("derefxyz=%s\n", sknobs_get_string("derefxyz", "$(xyz).test.$(abc)"));

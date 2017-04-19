@@ -10,8 +10,9 @@ extern "C" {
 
 extern int sknobs_init(int argc, char **argv);
 extern void sknobs_close(void);
-
+  
 extern int sknobs_add(char *pattern, char *value, char *comment);
+extern int sknobs_add_string(char *s, char *comment);
 extern int sknobs_load(int argc, char *argv[], char *comment);
 extern int sknobs_load_string(char *name, char *buffer, char *comment);
 extern int sknobs_load_file(char *filename);
