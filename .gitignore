@@ -8,9 +8,20 @@ lib*.a
 
 #Build directories
 x86_64/lib64
+x86_64/lib
 
 #Generated header file
 include/sknobs.h
 
 #Swig generated C file
 src/tcl/sknobs_wrap.c
+
+#distutils generated files
+src/python/MANIFEST
+src/python/c
+src/python/dist
+
+#Unit test files
+src/c/testsknobs
+src/c/testsknobs.saved
+
