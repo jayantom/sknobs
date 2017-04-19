@@ -11,3 +11,6 @@ x86_64/lib64
 
 #Generated header file
 include/sknobs.h
+
+#Swig generated C file
+src/tcl/sknobs_wrap.c
