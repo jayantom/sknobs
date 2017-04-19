@@ -1,0 +1,5 @@
+#!/usr/bin/tclsh
+load ./sknobs.so
+sknobs_init $argv
+puts [sknobs_get_value abc 4]
+puts [sknobs_get_string xyz "hi"]

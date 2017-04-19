@@ -1,6 +1,5 @@
 CFLAGS = -fPIC -Wall -Werror
-
-INSTALL_LIB=lib
+INSTALL_LIB=lib64
 
 default: libsknobs.a libsknobs.so
 

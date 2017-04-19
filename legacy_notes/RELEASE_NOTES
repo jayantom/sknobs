@@ -1,0 +1,61 @@
+0.25
+  - Limit use of "long" data type.
+  - Fix bug, ensuring that seed value is representable in 32 bits
+
+0.24
+  - Use getcwd() instead of $PWD.
+  - Use /dev/urandom instead of time() if it exists for the implicit seed
+    value if no explicit seed is specified.
+
+0.23
+  - Handle '+='.  Now an error.  This is a bit inconsistent with bare '+'
+    handling (a warning).  Consider making both either errors or warnings in 
+    the future.
+  - Move atol() usage to strto*().  Check errno for errors.
+  - Weights are treated as unsigned values.  This avoids the foggy semantics
+    of negative weights.
+  - Seed sources now can supply either signed or unsigned values.  In prior
+    releases, on a 32-bit platform, if a seed value was specified as a "large"
+    32-bit unsigned value (>LONG_MAX) the atol() call was saturating the value
+    to LONG_MAX.  In this release, seed value strings are converted to 64-bit
+    unsigned values, and then the lower 32-bits are used.
+  - All messages now indicate sknobs as the source.
+
+0.22
+  - Handle bare '+' gracefully.  Warn and ignore.
+
+0.21
+  - Fix corruption issue when encountering strings > 8KB.
+
+0.20
+  - In c, add install dependency on libsknobs.so.
+  - Fixed bug in parsing -f args from files if the delimiter flavor is
+    set to "crnl".
+  - Improve clean target in src/python.
+
+0.19
+  - Add new way of tokenizing a string to get knobs.  Search for "token" in
+    doc/README for an explanation.  This feature enables whitespace in knob
+    string values!  Default behavior is backward compatible.
+
+0.18
+  - Default target in src/c/ is now libsknobs.a and libsknobs.so.  To run
+    test, use "test" target.
+  - Better perl install.  Still installs locally: not to site-packages.
+  - Verilog install is just sknobs.sv.  DPI users should point to libsknobs.so.
+  - DPI and VPI tests for Questa (see "testquesta_dpi" and "testquesta_vpi" 
+    targets.  Haven't touched VCS.
+  - VPI sknobs iterate now works on 64-bit platform.  Use vpiHexStrVal to pass
+    iterator pointer (sknobsvpi.c).
+
+0.17
+  - Remove all generated files from tarball.  Still need distclean target to
+  automate this.  
+  - Remove random old versions of sknobs.c and patch output from src/c.
+  - Python test now works without SKNOBS_HOME set.
+  - Tweaks to vcs and questa test targets.  Neither robust.
+  - Enhancements to VPI code from Sankalp.
+
+0.16
+  - Change to src/c/sknobs.c.
+  - Cleaning up error handling.

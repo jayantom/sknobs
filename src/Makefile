@@ -11,8 +11,8 @@ clean:
 	#$(MAKE) -C perl clean
 
 build: 
-	echo $(ARCH)
-	echo $(CURDIR)
+	@echo ARCH=$(ARCH)
+	@echo CURDIR=$(CURDIR)
 	$(MAKE) -C c
 	$(MAKE) -C tcl
 	#$(MAKE) -C python

@@ -8,3 +8,6 @@ lib*.so
 
 #Build directories
 x86_64/lib64
+
+#Generated header file
+include/sknobs.h
