@@ -1,7 +1,7 @@
 # Compiled Files
 *.o
 lib*.a
-lib*.so
+*.so
 
 #Emacs tilde files
 *~
