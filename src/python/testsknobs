@@ -3,8 +3,9 @@ import sys
 import os
 
 arch = os.uname()[4]
-sys.path.insert(0, os.path.expandvars("$SKNOBS_HOME/%s/lib/python" %(arch)))
-print sys.path
+lib = os.getenv('INSTALL_LIB')
+sys.path.insert(0, os.path.expandvars("$SKNOBS_HOME/%s/%s/python" %(arch,lib)))
+print("sys.path=%s"%sys.path)
 import sknobs
 
 sknobs.init(sys.argv)
@@ -13,9 +14,9 @@ sknobs.set_value('abc', 4)
 sknobs.set_string('xyz', 'there')
 sknobs.add('ttt', 'tttvalue')
 
-print sknobs.get_value('abc', 2)
-print sknobs.get_string('xyz', 'hi')
-print sknobs.get_all_strings('knobs.files')
-print sknobs.get_string('ttt', 'undefined')
-print sknobs.get_value('large', 0xffffffff)
-print "%x"%sknobs.get_value('larger', 0xfffffffffff)
+print (sknobs.get_value('abc', 2))
+print (sknobs.get_string('xyz', 'hi'))
+print (sknobs.get_all_strings('knobs.files'))
+print (sknobs.get_string('ttt', 'undefined'))
+print (sknobs.get_value('large', 0xffffffff))
+print ("%x"%sknobs.get_value('larger', 0xfffffffffff))
