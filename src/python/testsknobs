@@ -4,7 +4,7 @@ import os
 
 arch = os.uname()[4]
 lib = os.getenv('INSTALL_LIB')
-sys.path.insert(0, os.path.expandvars("$SKNOBS_HOME/%s/%s/python" %(arch,lib)))
+sys.path.insert(0, os.path.expandvars("$SKNOBS_HOME/%s/lib/python" %(arch)))
 print("sys.path=%s"%sys.path)
 import sknobs
 
