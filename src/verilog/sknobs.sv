@@ -47,7 +47,7 @@ package sknobs;
   function string get_string(string name, string default_value="unspecified");
     get_string = sknobs_get_string(name, default_value);
     // TBD figure out how to use the UVM reporter here, chicken and egg problem
-    $display("%0d:I:sknobs: +%s=%0d", $time, name, get_string);
+    $display("%0d:I:sknobs: +%s=%s", $time, name, get_string);
   endfunction: get_string
   
   function string find_file(string filename);
@@ -88,7 +88,8 @@ package sknobs;
   endfunction: exists
 
   function chandle iterate(string name);
-    return 0;
+    chandle tmp;
+    return tmp;
   endfunction: iterate
   
   function int iterator_next(chandle iterator);
@@ -131,7 +132,6 @@ package sknobs;
 
   function longint eval(string expr);
     return 0;
-    eval = sknobs_eval(expr);
   endfunction: eval
 `endif // !`ifndef __SKNOBS_NOP__
    
