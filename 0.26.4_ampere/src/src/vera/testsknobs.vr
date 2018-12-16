@@ -1,0 +1,8 @@
+#include "sknobs.vri"
+
+program test {
+  sknobs_set_value("abc", 20);
+  sknobs_set_string("filename", "myfile.test");
+  printf("abc=%d\n", sknobs_get_value("abc", 1));
+  printf("filename=%s\n", sknobs_get_string("filename", "nofile"));
+}

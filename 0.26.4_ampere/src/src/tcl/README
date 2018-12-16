@@ -1,0 +1,22 @@
+// This tells SWIG to treat char ** as a special case
+%typemap(in) (int argc, char **argv) {
+    Tcl_Obj **listobjv;
+    int       nitems;
+    int       i;
+    if (Tcl_ListObjGetElements(interp, $input, &nitems, &listobjv) == TCL_ERROR) {
+        return TCL_ERROR;
+    }
+    $1 = (char **) malloc((nitems+1)*sizeof(char *));
+    for (i = 0; i < nitems; i++) {
+      $2[i] = Tcl_GetStringFromObj(listobjv[i],0);
+    }
+    $1[i] = 0;
+}
+
+// This gives SWIG some cleanup code that will get called after the function call
+%typemap(freearg) (int argc, char **argv) {
+  if ($2) {
+     free($2);
+  }
+
+}

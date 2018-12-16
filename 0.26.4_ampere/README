@@ -1,0 +1,57 @@
+This source is from Ampere's version 0.26.4 of sknobs
+
+1. Create directory for new version.
+2. mkdir <version>/src/
+3. untar sknobs tarball there.
+4. cd <version>/src/src
+
+5. edit Makefile to change following line from:
+	 $(MAKE) CFLAGS="-I../c -m64 -fPIC" ARCH=x86_64 INSTALL_LIB=lib64 clean default installarch
+to:
+	$(MAKE) CFLAGS="-I../c -I/tools/FOSS/tcl/8.6.8/x86_64/include -m64 -fPIC" ARCH=x86_64 INSTALL_LIB=lib64 clean default installarch
+(Note: this change may be different in the future if we move to a new version of tcl; key is to have the path to the correct tcl include files)
+
+6. edit python/setup.py to change the following line from:
+       ext_modules=[Extension('sknobs', ['../c/sknobs.c', 'sknobs_ext.c'], include_dirs=['../c'])],
+to:
+       ext_modules=[Extension('sknobs', ['../c/sknobs.c', 'sknobs_ext.c'], include_dirs=['../c', '/tools/FOSS/python/2.6.4/x86_64/include/python2.6'], library_dirs=['/tools/FOSS/python/2.6.4/x86_64/lib'])],
+(Note: this change may be different in the future if we move to a new version of python; key is to have the path to the correct python include files)
+
+6.5 python3 dir was copied from python dir, and edits were made in various files for python3 compatibility (diff python dir and python3 dir in 0.26.2):
+- python commands changed to python3
+- ext_modules variable in setup.py changed to reference python 3.6.5
+- sknobs_ext.c changed for python3 compatibility (see following links for background):
+http://python3porting.com/cextensions.html
+
+http://py3c.readthedocs.io/en/latest/reference.html
+
+https://stackoverflow.com/questions/28305731/compiler-cant-find-py-initmodule-is-it-deprecated-and-if-so-what-should-i
+
+https://docs.python.org/3/extending/extending.html#the-module-s-method-table-and-initialization-function
+
+
+7. edit tcl/Makefile to change the following line from:
+ CFLAGS = -fPIC -I../c
+to:
+ CFLAGS = -fPIC -I../c  -I/tools/FOSS/tcl/8.6.8/x86_64/include
+
+and this line from:
+       $(SWIG) -I../c -includeall -tcl $<
+to:
+       $(SWIG) -I../c -I/tools/FOSS/tcl/8.6.8/x86_64/include -includeall -tcl $<
+
+8. if still using older version of swig (earlier than 2.0.8) and a version of Perl newer than 5.16, need to add the following sed command when making sknobs_wrap.c to remove bool undef (swig bug described here: https://github.com/WGLab/PennCNV/issues/18):
+sknobs.pm sknobs_wrap.c: sknobs.i
+        swig -perl5 sknobs.i
+        sed -i -e '/#undef bool/d' sknobs_wrap.c 
+
+
+9. On a 64-bit machine:
+sudo -i -u reladmin
+cd /tools/FOSS/sknobs/0.26.4/src/src
+module load tools/FOSS/python3/3.6.5
+module load tools/FOSS/perl/5.26.2
+make install64 PREFIX=../../..
+exit
+
+

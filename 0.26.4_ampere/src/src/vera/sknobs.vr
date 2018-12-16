@@ -1,0 +1,29 @@
+#include "knobs.vri"
+
+extern "C" function bit dc_knobs_exists(string name);
+extern "C" function bit [63:0] dc_knobs_get_value(string name, bit [63:0] defaultValue=64'h0);
+extern "C" task dc_knobs_set_value(string name, bit [63:0] value);
+extern "C" function string dc_knobs_get_string(string name, string defaultValue);
+extern "C" task dc_knobs_set_string(string name, string value);
+
+function bit knobs_exists(string name) {
+  knobs_exists = dc_knobs_exists(name);
+}
+
+function bit [63:0] knobs_get_value(string name, bit [63:0] defaultValue=64'h0) {
+  knobs_get_value = dc_knobs_get_value(name, defaultValue);
+}
+
+task knobs_set_value(string name, bit [63:0] value) {
+  dc_knobs_set_value(name, value);
+}
+
+function string knobs_get_string(string name, string defaultValue) {
+  knobs_get_string = dc_knobs_get_string(name, defaultValue);
+}
+
+task knobs_set_string(string name, string value) {
+  dc_knobs_set_string(name, value);
+}
+
+

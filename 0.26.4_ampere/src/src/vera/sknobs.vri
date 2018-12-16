@@ -1,0 +1,10 @@
+#ifndef KNOBS_VRI_INC
+#define KNOBS_VRI_INC
+
+extern function bit knobs_exists(string name);
+extern function bit [63:0] knobs_get_value(string name, bit [63:0] defaultValue=64'h0);
+extern task knobs_set_value(string name, bit [63:0] value);
+extern function string knobs_get_string(string name, string defaultValue);
+extern task knobs_set_string(string name, string value);
+
+#endif

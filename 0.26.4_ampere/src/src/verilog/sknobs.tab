@@ -1,0 +1,8 @@
+$knobs_exists call=vpi_knobs_exists_calltf size=1
+$knobs_get_value call=vpi_sknobs_get_value_calltf size=64
+$knobs_set_value call=vpi_sknobs_set_value_calltf
+$knobs_get_string call=vpi_sknobs_get_string_calltf size=8192
+$knobs_set_string call=vpi_sknobs_set_string_calltf
+$knobs_iterate call=vpi_sknobs_iterate_calltf size=64
+$knobs_iterator_next call=vpi_sknobs_iterator_next_calltf size=1
+$knobs_iterator_get_string call=vpi_sknobs_iterator_get_string_calltf size=8192
