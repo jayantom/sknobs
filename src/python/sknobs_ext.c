@@ -66,7 +66,7 @@ set_value(PyObject *self, PyObject *args) {
   if(!PyArg_ParseTuple(args,(char *)"sL:set_value",&name,&value)) 
     return NULL;
   sknobs_set_value(name, value); 
-  return Py_None;
+  Py_RETURN_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ set_seed(PyObject *self, PyObject *args) {
   if(!PyArg_ParseTuple(args,(char *)"l:set_value",&value)) 
     return NULL;
   sknobs_set_seed(value); 
-  return Py_None;
+  Py_RETURN_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ add(PyObject *self, PyObject *args) {
   if(!PyArg_ParseTuple(args,(char *)"ss:add",&name, &value)) 
     return NULL;
   sknobs_add(name, value, "python");
-  return Py_None;
+  Py_RETURN_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ set_string(PyObject *self, PyObject *args) {
   if(!PyArg_ParseTuple(args,(char *)"ss:set_string",&name, &value)) 
     return NULL;
   sknobs_set_string(name, value);
-  return Py_None;
+  Py_RETURN_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ static PyObject *
 save(PyObject *self, PyObject *args) {
   char *filename = PyString_AsString(args);
   sknobs_save(filename);
-  return Py_None;
+  Py_RETURN_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////
