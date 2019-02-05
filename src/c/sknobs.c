@@ -564,6 +564,7 @@ void sknobs_dump(void) {
   sknob_s *knob = sknob_list;
   char *filename;
   sknobs_iterator_p iterator;
+  check_sknobs_init();
   printf("info: sknobs: dumping knobs\n");
   while (knob) {
     printf("info: sknobs: knob:");
@@ -586,6 +587,7 @@ void sknobs_save(char *filename) {
   sknob_s *knob;
   int i;
   FILE *fp;
+  check_sknobs_init();
   fp  = fopen(filename, "w");
   if (!fp) {
     printf("error: sknobs: unable to open filename for writing: %s\n", filename);
@@ -706,6 +708,7 @@ int sknobs_set_seed_from_string(char *s) {
 int sknobs_add_string(char *s, char *comment) {
   char *pattern, *value;
   char *lbuffer;
+  check_sknobs_init();
   if (debug > 2)
     printf("sknobs_add_string: %s\n", s);
   if (!s) {
@@ -773,6 +776,7 @@ char *sknobs_find_file(char *filename) {
   char *search_path;
   static char filename_buffer[1024];
   char filename_buffer2[1024]; // hack
+  check_sknobs_init();
   strcpy(filename_buffer2, filename);
   iterator = sknobs_iterate("sknobs.search_path");
   while (sknobs_iterator_next(iterator)) {
@@ -794,6 +798,7 @@ char *sknobs_find_file(char *filename) {
 // sknobs_get_filename
 char *sknobs_get_filename(char *name, char *defaultValue) {
   char *s = sknobs_get_string(name, defaultValue);
+  check_sknobs_init();
   return sknobs_find_file(s);
 }
 
@@ -882,6 +887,7 @@ int sknobs_load_string(char *name, char *s, char *comment) {
   int argc = 0;
   char *argv[MAX_ARGV_SIZE];
   char *token;
+  check_sknobs_init();
   if (debug > 2) printf("sknobs_load_string: %s\n", s);
   argv[argc++] = name;
   token = strtok(s, sknobs_delimiters);
@@ -904,6 +910,7 @@ int sknobs_load_file(char *filename) {
   long size;
   char *contents;
 
+  check_sknobs_init();
   if (debug > 1)
     printf("info: sknobs: loading knobs from file: %s\n", filename);
 
