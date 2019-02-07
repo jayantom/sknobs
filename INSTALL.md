@@ -10,3 +10,9 @@ Notes:
 Binary files are automatically placed in PREFIX/`uname -m`/. Everything is installed "in place" as siblings of src,
 i.e., create "include", "lib", "<mach>/lib", etc..
 
+If you wish particular languages not to be built, add one of more of the following to the make command:
+* `SKNOBS_C=0`
+* `SKNOBS_PERL=0`
+* `SKNOBS_PYTHON=0`
+* `SKNOBS_TCL=0`
+* `SKNOBS_VERILOG=0`
