@@ -1,4 +1,0 @@
-include *.c
-include *.h
-include README
-
