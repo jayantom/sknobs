@@ -16,3 +16,14 @@ If you wish particular languages not to be built, add one of more of the followi
 * `SKNOBS_PYTHON=0`
 * `SKNOBS_TCL=0`
 * `SKNOBS_VERILOG=0`
+
+System Package Dependencies (RPM package names)
+* perl-devel
+* python3
+* python3-devel
+* python3-setuptools
+
+Python Package Dependencies.  It is expected that you are running in an
+appropriate virtal environment for the version of python for which you wish to
+build.
+* pip install wheel
