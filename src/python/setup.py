@@ -3,7 +3,10 @@ import setuptools
 extension = setuptools.Extension(
     name='sknobs',
     sources=['../c/sknobs.c', 'sknobs_ext.c'],
-    include_dirs=['../c'],
+    include_dirs=[
+        '../c',
+        '../c/external',
+    ],
     language='c',
     )
 
