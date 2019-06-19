@@ -1,8 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
 // Python extension for knobs
+//
+// Using py3c for python2/python3 compatibility.  To remove python2 support and
+// the dependency on py3c, follow:
+// https://py3c.readthedocs.io/en/latest/guide-cleanup.html
+//
+// Also consider moving to cython or cffi for more permanent non-manual
+// extension support.
 ////////////////////////////////////////////////////////////////////////////
 
 #include <Python.h>
+#include <py3c.h>
 #include <stdio.h>
 
 #include "sknobs.h"
@@ -21,12 +29,12 @@ init(PyObject *self, PyObject *args) {
   argv = (char **) malloc((argc+1)*sizeof(char *));
   for (i=0; i<argc; ++i) {
     PyObject *s = PyList_GetItem(args, i);
-    if (!PyString_Check(s)) {
+    if (!PyStr_Check(s)) {
       free(argv);
       PyErr_SetString(PyExc_ValueError, "List items must be strings");
       return NULL;
     }
-    argv[i] = PyString_AsString(s);
+    argv[i] = PyStr_AsString(s);
   }
   argv[i] = 0;
   return PyInt_FromLong(sknobs_init(argc, argv)); 
@@ -35,7 +43,7 @@ init(PyObject *self, PyObject *args) {
 ////////////////////////////////////////////////////////////////////////////
 static PyObject *
 exists(PyObject *self, PyObject *args) {
-  char *name = PyString_AsString(args);
+  char *name = PyStr_AsString(args);
   return PyInt_FromLong(sknobs_exists(name)); 
 }
 
@@ -55,7 +63,7 @@ get_string(PyObject *self, PyObject *args) {
   char *name, *defaultValue;
   if(!PyArg_ParseTuple(args,(char *)"ss:get_string",&name, &defaultValue)) 
     return NULL;
-  return PyString_FromString(sknobs_get_string(name, defaultValue));
+  return PyStr_FromString(sknobs_get_string(name, defaultValue));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -102,19 +110,19 @@ set_string(PyObject *self, PyObject *args) {
 ////////////////////////////////////////////////////////////////////////////
 static PyObject *
 get_all_strings(PyObject *self, PyObject *args) {
-  char *pattern = PyString_AsString(args);
+  char *pattern = PyStr_AsString(args);
   sknobs_iterator_p iterator = sknobs_iterate(pattern);
   PyObject *pl = PyList_New(0);
   while (sknobs_iterator_next(iterator))
-    PyList_Append(pl, PyString_FromString(sknobs_iterator_get_string(iterator)));
+    PyList_Append(pl, PyStr_FromString(sknobs_iterator_get_string(iterator)));
   return pl;
 }
 
 ////////////////////////////////////////////////////////////////////////////
 static PyObject *
 find_file(PyObject *self, PyObject *args) {
-  char *filename = PyString_AsString(args);
-  return PyString_FromString(strdup(sknobs_find_file(filename)));
+  char *filename = PyStr_AsString(args);
+  return PyStr_FromString(strdup(sknobs_find_file(filename)));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -123,13 +131,13 @@ get_filename(PyObject *self, PyObject *args) {
   char *name, *defaultValue;
   if(!PyArg_ParseTuple(args,(char *)"ss:get_string",&name, &defaultValue)) 
     return NULL;
-  return PyString_FromString(sknobs_get_filename(name, defaultValue));
+  return PyStr_FromString(sknobs_get_filename(name, defaultValue));
 }
 
 ////////////////////////////////////////////////////////////////////////////
 static PyObject *
 save(PyObject *self, PyObject *args) {
-  char *filename = PyString_AsString(args);
+  char *filename = PyStr_AsString(args);
   sknobs_save(filename);
   Py_RETURN_NONE;
 }
@@ -152,6 +160,21 @@ static PyMethodDef sknobs_funcs[] = {
 };
 
 ////////////////////////////////////////////////////////////////////////////
-void initsknobs(void) {
-  Py_InitModule3("sknobs", sknobs_funcs, "sknobs extension module");
+static struct PyModuleDef moduledef = {
+  PyModuleDef_HEAD_INIT, /* m_base */
+  "sknobs",              /* m_name */
+  NULL,                  /* m_doc */
+  -1,                    /* m_size */
+  sknobs_funcs           /* m_methods */
+};
+
+////////////////////////////////////////////////////////////////////////////
+MODULE_INIT_FUNC(sknobs)
+{
+  PyObject *m;
+  m = PyModule_Create(&moduledef);
+  if (m == NULL) {
+    return NULL;
+  }
+  return m;
 }

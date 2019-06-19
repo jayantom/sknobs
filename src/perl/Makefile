@@ -7,11 +7,13 @@ test:
 	make -f sknobs.mk test
 
 install:
-	make -f sknobs.mk install
+	make -f sknobs.mk pure_install
 
 sknobs.pm sknobs_wrap.c: sknobs.i
 	swig -perl5 sknobs.i
 
+# TBD Move to just using INSTALL_BASE?
+# https://perldoc.perl.org/ExtUtils/MakeMaker.html#INSTALL_BASE
 sknobs.mk: Makefile.PL
 	perl Makefile.PL INSTALLSITEARCH=${PREFIX}/${ARCH}/${INSTALL_LIB}/perl
 
