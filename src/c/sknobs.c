@@ -9,6 +9,7 @@
 #include <regex.h>
 #include <fnmatch.h>
 #include <glob.h>
+#include <limits.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -24,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // defines
 #define MAX_ARGV_SIZE 100000
-#define MAX_FILENAME_SIZE 10000
+#define MAX_FILENAME_SIZE PATH_MAX
 #define MAX_CHOICES 100
 #define HASH_TABLE_SIZE 1031
 #define MAX_ITERATORS 10
@@ -774,14 +775,14 @@ int sknobs_file_exists(char *filename) {
 char *sknobs_find_file(char *filename) {
   sknobs_iterator_p iterator;
   char *search_path;
-  static char filename_buffer[1024];
-  char filename_buffer2[1024]; // hack
+  static char filename_buffer[MAX_FILENAME_SIZE];
+  char filename_buffer2[MAX_FILENAME_SIZE]; // hack
   check_sknobs_init();
-  strcpy(filename_buffer2, filename);
+  strncpy(filename_buffer2, filename, sizeof(filename_buffer2));
   iterator = sknobs_iterate("sknobs.search_path");
   while (sknobs_iterator_next(iterator)) {
     search_path  = sknobs_iterator_get_string(iterator);
-    sprintf(filename_buffer, "%s/%s", search_path, filename_buffer2);
+    snprintf(filename_buffer, sizeof(filename_buffer), "%s/%s", search_path, filename_buffer2);
     if (debug > 1) printf("info: sknobs: trying file: %s\n", filename_buffer);
     if (sknobs_file_exists(filename_buffer)) {
       if (debug > 1) printf("info: sknobs: found file: %s\n", filename_buffer);
@@ -963,7 +964,7 @@ int sknobs_load_file_if_exists(char *filename) {
 static int sknobs_load_knobsrc_files(char *dir) {
   char pattern[MAX_FILENAME_SIZE];
   glob_t g;
-  sprintf(pattern, "%s/*.knobsrc", dir);
+  snprintf(pattern, sizeof(pattern), "%s/*.knobsrc", dir);
   if (debug > 1)
     printf("info: sknobs: searching for knobsrc files: %s\n", pattern);
   if (0==glob(pattern, 0, 0, &g)) {
@@ -1083,7 +1084,7 @@ int sknobs_init(int argc, char **argv) {
   while (strlen(buffer)) {
     char *p;
     sknobs_add("sknobs.search_path", buffer, "PWD");
-    sprintf(filename, "%s/.stopknobs", buffer);
+    snprintf(filename, sizeof(filename), "%s/.stopknobs", buffer);
     if (sknobs_file_exists(filename))
       break;
     p = strrchr(buffer, '/');
@@ -1140,7 +1141,7 @@ int sknobs_init(int argc, char **argv) {
   // try to load ~/.knobsrc
   home = getenv("HOME");
   if (home) {
-    sprintf(filename, "%s/.knobsrc", home);
+    snprintf(filename, sizeof(filename), "%s/.knobsrc", home);
     if (sknobs_load_file_if_exists(filename)) {
       sknobs_init_return_value = 1;
       return sknobs_init_return_value;
