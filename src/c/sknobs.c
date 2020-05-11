@@ -256,7 +256,10 @@ unsigned long long sknobs_eval(char *expr) {
     printf("error: sknobs: eval: could not covert to ull %s from %s\n", left, expr);
   }
   // return value within range
-  return l + sknobs_get_random() % (r-l+1);
+  if ((l==0) && (r==0xFFFFFFFFFFFFFFFFULL)) // special case: avoid modulo 0
+    return sknobs_get_random();
+  else
+    return l + sknobs_get_random() % (r-l+1);
 }
 
 ////////////////////////////////////////////////////////////////////////////
