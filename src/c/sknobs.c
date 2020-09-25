@@ -70,6 +70,7 @@ static sknob_iterator_s sknobs_iterators[MAX_ITERATORS];
 static int sknobs_current_iterator = 0;
 static int sknobs_init_flag = 0;
 static int sknobs_init_return_value = 0;
+static int sknobs_set_seed_flag = 0;
 extern char **environ;
 static char random_state[RANDOM_STATE_SIZE];
 static char *sknobs_delimiters_sptbnl = " \t\n";
@@ -677,6 +678,30 @@ static int sknobs_uncomment(char *lbuffer) {
 // sknobs_set_seed
 void sknobs_set_seed(unsigned seed) {
   char *old_random_state;
+  // +seed knobs encountered after the initial processing in sknobs_init must
+  // be ignored.  Otherwise the presence or absence of +seed on the commandline
+  // after sknobs_get_random has been called can reset the random state.
+  //
+  // Example:
+  //   a) SEED=4 command -f a,b,c
+  //   b) command -f a,b,c +seed=4
+  // These should be expected to behave identically, but
+  //   a) - set_seed(4)
+  //      - get_random() = X for file selection
+  //      - get_random() = Y for next thing
+  //   b) - set_seed(4)
+  //      - get_random() = X for file selection
+  //      - set_seed(4) when parsing argv and finding +seedt
+  //      - get_random() = X for next thing
+  //
+  if (sknobs_set_seed_flag) {
+    if (debug > 0) {
+      printf("info: sknobs: set_seed called a second time, with %d args\n",
+             seed);
+    }
+    return;
+  }
+  sknobs_set_seed_flag = 1;
   if (debug > 0)
     printf("info: sknobs: seed: %d\n", seed);
   // Call srandom for others, but also generate our private state.
