@@ -52,9 +52,10 @@ This * will typically need to be escaped when used on a command line like so:
 
 ## Initialization
  
-The knobs database is loaded after a call to knobs_init, a seed for selected first randomly 
-by using the time of day, this can be overridding by setting a SEED environment variable or by passing in an
-+seed=n option on the command line.  After the seed has been determined a number of initialization files 
+The knobs database is loaded after a call to knobs_init, a seed is selected first randomly
+by using the time of day, this can be overridden by setting a SEED environment variable or by passing in an
++seed=n option on the command line.  After the seed has been determined it can not be overridden.
+Next a number of initialization files
 are tried.
 
   1. ~/.knobsrc
