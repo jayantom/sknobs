@@ -773,10 +773,14 @@ int sknobs_add_string(char *s, char *comment) {
   value = strtok(NULL, "\0");
   if (!value)
     value = "1";
-  if (0==strcmp(pattern, "seed"))
+  if (0==strcmp(pattern, "seed")) {
     sknobs_set_seed_from_string(value);
-  if (sknobs_add(pattern, value, comment))
+    // This call adds the knob value if the seed is set, so skip the add for
+    // seed.
+  }
+  else if (sknobs_add(pattern, value, comment)) {
     goto sknobs_add_string_error;
+  }
   free(lbuffer);
   return 0;
 
