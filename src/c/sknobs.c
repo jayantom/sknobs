@@ -813,8 +813,12 @@ char *sknobs_find_file(char *filename) {
   strncpy(filename_buffer2, filename, sizeof(filename_buffer2));
   iterator = sknobs_iterate("sknobs.search_path");
   while (sknobs_iterator_next(iterator)) {
+    int ret;
     search_path  = sknobs_iterator_get_string(iterator);
-    snprintf(filename_buffer, sizeof(filename_buffer), "%s/%s", search_path, filename_buffer2);
+    ret = snprintf(filename_buffer, sizeof(filename_buffer), "%s/%s", search_path, filename_buffer2);
+    // Check that snprintf didn't truncate.  Per the man page: "a return value
+    // of size or more means that the output was truncated"
+    assert(ret < sizeof(filename_buffer));
     if (debug > 1) printf("info: sknobs: trying file: %s\n", filename_buffer);
     if (sknobs_file_exists(filename_buffer)) {
       if (debug > 1) printf("info: sknobs: found file: %s\n", filename_buffer);
@@ -1115,8 +1119,12 @@ int sknobs_init(int argc, char **argv) {
   buffer[SKNOBS_MAX_LENGTH-1] = '\0';
   while (strlen(buffer)) {
     char *p;
+    int ret;
     sknobs_add("sknobs.search_path", buffer, "PWD");
-    snprintf(filename, sizeof(filename), "%s/.stopknobs", buffer);
+    ret = snprintf(filename, sizeof(filename), "%s/.stopknobs", buffer);
+    // Check that snprintf didn't truncate.  Per the man page: "a return value
+    // of size or more means that the output was truncated"
+    assert(ret < sizeof(filename));
     if (sknobs_file_exists(filename))
       break;
     p = strrchr(buffer, '/');
