@@ -495,6 +495,67 @@ int vpi_sknobs_add_sizetf() {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// vpi_sknobs_prepend_calltf
+int vpi_sknobs_prepend_calltf() {
+  vpiHandle sysTfHandle;
+  vpiHandle argIterator;
+  vpiHandle patternHandle;
+  vpiHandle valueHandle;
+  vpiHandle commentHandle;
+  s_vpi_value value;
+  int result;
+  char *pattern, *newValue, *comment;
+
+  vpi_sknobs_init();
+
+  // get handle to system function call
+  sysTfHandle = vpi_handle(vpiSysTfCall, NULL);
+
+  // get handles to arguments
+  argIterator = vpi_iterate(vpiArgument, sysTfHandle);
+  patternHandle = vpi_scan(argIterator);
+  valueHandle = vpi_scan(argIterator);
+  commentHandle = vpi_scan(argIterator);
+  
+  // get pattern
+  value.format = vpiStringVal;
+  vpi_get_value(patternHandle, &value);
+  pattern = expandName(value.value.str);
+
+  // get value
+  value.format = vpiStringVal;
+  vpi_get_value(valueHandle, &value);
+  //have to strdup it because newValue and comment pointed to the 
+  //same string value.value.str so when comment is read, 
+  //the newValue pointer also changes.
+  newValue = strdup((const char *)value.value.str);
+
+  // get comment
+  comment = "";
+  if (commentHandle) {
+    value.format = vpiStringVal;
+    vpi_get_value(commentHandle, &value);
+    comment = value.value.str;
+  }
+
+  // search knobs database for result
+  result = sknobs_prepend(pattern, newValue, comment);
+
+  // return result
+  value.format = vpiScalarVal;
+  value.value.scalar = result;
+  vpi_put_value(sysTfHandle, &value, NULL, vpiNoDelay);
+  free(newValue);
+  return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// vpi_sknobs_prepend_sizetf
+int vpi_sknobs_prepend_sizetf() {
+  return 1;
+}
+
+////////////////////////////////////////////////////////////////////////////
 // vpi_sknobs_load_calltf
 int vpi_sknobs_load_calltf() {
   vpiHandle sysTfHandle;
@@ -1039,6 +1100,16 @@ void vpi_register_tfs( void ) {
     systf_data.calltf      = vpi_sknobs_add_calltf;
     systf_data.compiletf   = 0;
     systf_data.sizetf      = vpi_sknobs_add_sizetf;
+    systf_data.user_data   = 0;
+    systf_handle = vpi_register_systf( &systf_data );
+    vpi_free_object( systf_handle );
+
+    systf_data.type        = vpiSysFunc;
+    systf_data.sysfunctype = vpiSysFuncSized;
+    systf_data.tfname      = "$sknobs_prepend";
+    systf_data.calltf      = vpi_sknobs_prepend_calltf;
+    systf_data.compiletf   = 0;
+    systf_data.sizetf      = vpi_sknobs_prepend_sizetf;
     systf_data.user_data   = 0;
     systf_handle = vpi_register_systf( &systf_data );
     vpi_free_object( systf_handle );

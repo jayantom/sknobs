@@ -5,6 +5,7 @@ package sknobs;
   import "DPI-C" function int sknobs_init(input int argc);
   import "DPI-C" function void sknobs_close();
   import "DPI-C" function int sknobs_add(input string pattern, input string value, input string comment);
+  import "DPI-C" function int sknobs_prepend(input string pattern, input string value, input string comment);
   import "DPI-C" function int sknobs_load_string(input string name, input string buffer, input string comment);
   import "DPI-C" function int sknobs_load_file(input string filename);
   import "DPI-C" function int sknobs_load_file_if_exists(input string filename);
