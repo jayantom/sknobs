@@ -45,6 +45,8 @@ int main(int argc, char *argv[]) {
   iterator = sknobs_iterate("list");
   while(sknobs_iterator_next(iterator))
     printf("s from list = %s\n", sknobs_iterator_get_string(iterator));
+  // Test knob from recursive dash-f files.
+  printf("fromfile=%s\n", sknobs_get_string("fromfile", 0));
   sknobs_save("testsknobs.saved");
   sknobs_close();
 

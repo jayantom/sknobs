@@ -4,7 +4,7 @@ INSTALL_LIB=lib64
 default: libsknobs.a libsknobs.so
 
 test: testsknobs
-	./testsknobs
+	./testsknobs -f test000.knobs
 
 sknobs: sknobs.o
 
