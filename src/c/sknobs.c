@@ -24,8 +24,8 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // defines
-#define MAX_ARGV_SIZE 100000
 #define ARGV_SIZE_CHUNK 1000
+#define MAX_ARGV_SIZE (ARGV_SIZE_CHUNK * 100)
 #define MAX_FILENAME_SIZE PATH_MAX
 #define MAX_CHOICES 100
 #define HASH_TABLE_SIZE 1031
