@@ -24,7 +24,8 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // defines
-#define MAX_ARGV_SIZE 100000
+#define ARGV_SIZE_CHUNK 1000
+#define MAX_ARGV_SIZE (ARGV_SIZE_CHUNK * 100)
 #define MAX_FILENAME_SIZE PATH_MAX
 #define MAX_CHOICES 100
 #define HASH_TABLE_SIZE 1031
@@ -921,21 +922,32 @@ int sknobs_load(int argc, char *argv[], char *comment) {
 // return 1 on error
 int sknobs_load_string(char *name, char *s, char *comment) {
   // tokenize
+  int return_value = 0;
   int argc = 0;
-  char *argv[MAX_ARGV_SIZE];
+  size_t current_argv_size;
+  char **argv;
   char *token;
   check_sknobs_init();
   if (debug > 2) printf("sknobs_load_string: %s\n", s);
+  argv = malloc(ARGV_SIZE_CHUNK * sizeof(char*));
+  assert(argv);
+  current_argv_size = ARGV_SIZE_CHUNK;
   argv[argc++] = name;
   token = strtok(s, sknobs_delimiters);
   while (token) {
-    assert(argc < MAX_ARGV_SIZE);
+    if(argc >= current_argv_size) {
+      // Incrementally add chunks.
+      assert(argc < MAX_ARGV_SIZE);
+      current_argv_size += ARGV_SIZE_CHUNK;
+      argv = realloc(argv, current_argv_size * sizeof(char*));
+      assert(argv);
+    }
     argv[argc++] = token;
     token = strtok(NULL, sknobs_delimiters);
   }
-  if (sknobs_load(argc, argv, comment))
-    return 1;
-  return 0;
+  return_value = sknobs_load(argc, argv, comment);
+  free(argv);
+  return return_value;
 }
 
 ////////////////////////////////////////////////////////////////////////////
