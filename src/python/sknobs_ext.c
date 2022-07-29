@@ -99,6 +99,16 @@ add(PyObject *self, PyObject *args) {
 
 ////////////////////////////////////////////////////////////////////////////
 static PyObject *
+prepend(PyObject *self, PyObject *args) {
+  char *name, *value;
+  if(!PyArg_ParseTuple(args,(char *)"ss:add",&name, &value)) 
+    return NULL;
+  sknobs_prepend(name, value, "python");
+  Py_RETURN_NONE;
+}
+
+////////////////////////////////////////////////////////////////////////////
+static PyObject *
 set_string(PyObject *self, PyObject *args) {
   char *name, *value;
   if(!PyArg_ParseTuple(args,(char *)"ss:set_string",&name, &value)) 
@@ -150,6 +160,7 @@ static PyMethodDef sknobs_funcs[] = {
   {"get_string",      (PyCFunction)get_string,      METH_VARARGS, "get_string(name, default): get string value of knob\n"},
   {"get_all_strings", (PyCFunction)get_all_strings, METH_O,       "get_all_strings(name): get list of strings\n"},
   {"add",             (PyCFunction)add,             METH_VARARGS, "add(name, value): add knob\n"},
+  {"prepend",         (PyCFunction)prepend,         METH_VARARGS, "prepend(name, value): prepend knob\n"},
   {"set_value",       (PyCFunction)set_value,       METH_VARARGS, "set_value(name, value): set integer value of knob\n"},
   {"set_seed",        (PyCFunction)set_seed,        METH_VARARGS, "set_seed(value): set global seed\n"},
   {"set_string",      (PyCFunction)set_string,      METH_VARARGS, "set_string(name, value): set string value of knob\n"},

@@ -3,6 +3,7 @@
  void sknobs_close(void);
 
  int sknobs_add(char *pattern, char *value, char *comment);
+ int sknobs_prepend(char *pattern, char *value, char *comment);
  int sknobs_load(int argc, char *argv[], char *comment);
  int sknobs_load_string(char *name, char *buffer, char *comment);
  int sknobs_load_file(char *filename);

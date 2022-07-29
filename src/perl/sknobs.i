@@ -57,6 +57,10 @@ static int add(char *pattern, char *value, char *comment) {
   return sknobs_add(pattern, value, comment);
 }
 
+static int prepend(char *pattern, char *value, char *comment) {
+  return sknobs_prepend(pattern, value, comment);
+}
+
 static int load(char **argv, char *comment) {
   int argc = 0, i, cargc=0;
   char **cargv;
