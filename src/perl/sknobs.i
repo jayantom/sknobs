@@ -5,7 +5,7 @@
 #include "XSUB.h" 
 
 // This tells SWIG to treat char ** as a special case
-%typemap(perl5,in) char ** {
+%typemap(in) char ** {
   AV *tempav;
   I32 len;
   int i;
@@ -25,7 +25,7 @@
 };
 
 // This cleans up our char ** array after the function call
-%typemap(perl5,freearg) char ** {
+%typemap(freearg) char ** {
   free($1);
 }
 
