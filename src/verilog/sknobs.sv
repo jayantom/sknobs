@@ -44,12 +44,6 @@ package sknobs;
     iterator_get_string = sknobs_iterator_get_string(iterator);
   endfunction: iterator_get_string
   
-  function string get_string(string name, string default_value="unspecified");
-    get_string = sknobs_get_string(name, default_value);
-    // TBD figure out how to use the UVM reporter here, chicken and egg problem
-    $display("%0d:I:sknobs: +%s=%s", $time, name, get_string);
-  endfunction: get_string
-  
   function string find_file(string filename);
     find_file = sknobs_find_file(filename);
     $display("%0d:I:sknobs: find_file: %s=%s", $time, filename, find_file);
@@ -58,24 +52,33 @@ package sknobs;
   function string get_filename(string filename, string default_value="unspecified");
     get_filename = sknobs_get_filename(filename, default_value);
   endfunction: get_filename
-  
-  function longint get_value(string name, longint default_value=0);
-    get_value = sknobs_get_value(name, default_value);
-    // TBD figure out how to use the UVM reporter here, chicken and egg problem
-    $display("%0d:I:sknobs: +%s=%0d", $time, name, get_value);
-  endfunction: get_value
-  
-  function longint get_dynamic_value(string name, longint default_value=0);
-    get_dynamic_value = sknobs_get_dynamic_value(name, default_value);
-  endfunction: get_dynamic_value
+ 
+  class value #(type T=longint);
 
-  function void set_value(string name, longint value);
-    void'(sknobs_set_value(name, value));
-  endfunction: set_value
+    static function T get(string name, T default_value=0);
+      case (type(default_value))
+        type(string): begin
+          // TBD figure out how to use the UVM reporter here, chicken and egg problem
+          $display("%0d:I:sknobs: +%s=%s", $time, name, get);
+          return T'(sknobs_get_string(name, default_value));
+        end
 
-  function void set_string(string name, string value);
-    void'(sknobs_set_string(name, value));
-  endfunction: set_string
+        default: return T'(sknobs_get_value(name, longint'(default_value)));
+      endcase
+    endfunction: get
+
+    static function void set(string name, T value);
+      case (type(value))
+          type(string): void'(sknobs_set_string(name, value));
+          default: void'(sknobs_set_value(name, longint'(value)));
+      endcase
+    endfunction: set
+
+    static function T get_dynamic(string name, T default_value=0);
+      get_dynamic = T'(sknobs_get_dynamic_value(name, longint'(default_value)));
+    endfunction: get_dynamic
+
+  endclass: value
 
   function longint eval(string expr);
     eval = sknobs_eval(expr);
@@ -104,10 +107,6 @@ package sknobs;
     return "";
   endfunction: iterator_get_string
   
-  function string get_string(string name, string default_value="unspecified");
-    return default_value;
-  endfunction: get_string
-  
   function string find_file(string filename);
     return "";
   endfunction: find_file
@@ -115,24 +114,25 @@ package sknobs;
   function string get_filename(string filename, string default_value="unspecified");
     return "";
   endfunction: get_filename
-  
-  function longint get_value(string name, longint default_value=0);
-    return default_value;
-  endfunction: get_value
-  
-  function longint get_dynamic_value(string name, longint default_value=0);
-    return default_value;
-  endfunction: get_dynamic_value
-
-  function void set_value(string name, longint value);
-  endfunction: set_value
-
-  function void set_string(string name, string value);
-  endfunction: set_string
 
   function longint eval(string expr);
     return 0;
   endfunction: eval
+
+  class value #(type T=longint);
+
+    static function T get(string name, T default_value=0);
+      return default_value;
+    endfunction: get
+
+    static function void set(string name, T value);  
+    endfunction: set_value
+
+    static function T get_dynamic(string name, T default_value=0);
+      return default_value;
+    endfunction: get_dynamic	
+
+  endclass: value
 `endif // !`ifndef __SKNOBS_NOP__
    
 endpackage: sknobs
