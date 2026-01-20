@@ -1273,7 +1273,8 @@ void sknobs_close(void) {
   if (debug > 0) {
     printf("info: sknobs: close\n");
   }
-
+  // re-init seed_flag
+  sknobs_set_seed_flag = 0;
   // free up knobs list
   knob = sknob_list;
   while (knob) {
