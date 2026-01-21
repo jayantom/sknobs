@@ -6,6 +6,7 @@ module test;
     $display("%m.abc=%0d", $sknobs_get_value("%m.abc", 10));
     $display("%m.abc=%0d", $sknobs_get_value("%m.abc", 10));
     $display("xyz=%0s", $sknobs_get_string("xyz", "mydefaultstring"));
+    $sknobs_prepend("list", "pre");
     iterator = $sknobs_iterate("list");
     while($sknobs_iterator_next(iterator))
         $display("next: %0s", $sknobs_iterator_get_string(iterator));

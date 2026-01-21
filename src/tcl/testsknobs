@@ -3,3 +3,10 @@ load ./sknobs.so
 sknobs_init $argv
 puts [sknobs_get_value abc 4]
 puts [sknobs_get_string xyz "hi"]
+sknobs_add test_add val tcl
+sknobs_prepend test_add pre_val tcl
+puts [sknobs_get_string test_add undefined]
+set i [sknobs_iterate test_add]
+while {[sknobs_iterator_next $i] != 0} {
+    puts [sknobs_iterator_get_string $i]
+}
